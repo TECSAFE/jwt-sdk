@@ -1,0 +1,72 @@
+name: Publish to package registries
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Environment setup
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: json, mbstring
+      - name: Install pnpm
+        run: npm i -g pnpm
+      
+      # Install dependencies
+      - name: Install dependencies with pnpm
+        run: pnpm install
+      - name: Install dependencies with composer
+        run: composer install
+      
+      # Build and generate code
+      - name: Build TypeScript
+        run: pnpm build
+      - name: Generate JsonSchema
+        run: pnpm schema
+      - name: Split JsonSchema
+        run: pnpm split
+      - name: Generate PHP
+        run: pnpm generate
+      
+      # Run tests
+      - name: Test
+        run: pnpm test
+      
+      # Final touches
+      - name: Replace version in package.json to be semver compatible
+        run: sed -i "s/IN-DEV/$(echo $GITHUB_REF | sed 's/refs\/tags\///')/" package.json
+      - name: Clone php-release branch
+        run: git clone --branch=php-release --single-branch git@github.com:TECSAFE/jwt-sdk.git
+        continue-on-error: true
+      - name: Publish PHP code to php-release branch
+        run: |
+          mkdir -p php-release
+          cp -rf src/ composer.json composer.lock LICENSE php-release/
+          cd php-release
+          git add .
+          git commit -m "Release $GITHUB_REF"
+          git branch -M php-release
+          git push
+      
+      # Publish to registries
+      - name: Publish package on NPM
+        run: pnpm publish . --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_SECRET}}
+      - name: Publish package on Packagist
+        run: |
+          compose config --global http-basic.repo.packagist.com ${{secrets.PACKAGIST_USER}} ${{secrets.PACKAGIST_SECRET}}
+          composer update
+

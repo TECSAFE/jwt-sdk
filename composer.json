@@ -1,17 +1,19 @@
 {
   "name": "tecsafe/jwt-sdk",
-  "description": "The SDK for token parsing and validation against the JWKS also contains the types of token bodies.",
+  "description": "The SDK for token parsing and validation against the JWKS. Also contains the types of token bodies.",
   "type": "library",
   "require": {
     "wol-soft/php-json-schema-model-generator-production": "^0.19.0",
-    "firebase/php-jwt": "^6.10"
+    "firebase/php-jwt": "^6.10",
+    "ext-json": "*",
+    "ext-mbstring": "*"
   },
   "require-dev": {
     "wol-soft/php-json-schema-model-generator": "^0.24.0"
   },
   "autoload": {
     "psr-4": {
-      "Tecsafe\\OFCP\\JWT": "src/php/"
+      "Tecsafe\\OFCP\\JWT\\": "src/php/"
     }
   },
   "minimum-stability": "stable"

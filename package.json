@@ -1,5 +1,30 @@
 {
 	"type": "module",
+  "version": "IN-DEV",
+  "description": "The SDK for token parsing and validation against the JWKS. Also contains the types of token bodies.",
+  "private": false,
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    "schema.json"
+  ],
+  "repository": "https://github.com/TECSAFE/jwt-sdk",
+  "homepage": "https://tecsafe.de/",
+  "keywords": [
+    "jwt",
+    "sdk",
+    "jwks",
+    "token",
+    "validation",
+    "parsing",
+    "types"
+  ],
 	"scripts": {
 		"build": "tsc",
 		"docs": "typedoc --out docs src/ts/",
