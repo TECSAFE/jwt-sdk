@@ -1,0 +1,6 @@
+{
+  "entryPoints": ["src/index.ts"],
+  "out": "docs",
+  "excludeExternals": true,
+  "exclude": ["**/node_modules/**"],
+}

@@ -1,0 +1,23 @@
+{
+	"type": "module",
+	"scripts": {
+		"build": "tsc",
+		"docs": "typedoc --out docs src/ts/",
+		"schema": "ts-json-schema-generator --path 'src/ts/types/**/*.ts' --out 'schema.json'",
+    "split": "node split.js",
+    "generate": "php generate.php",
+		"test": "jest --runInBand"
+	},
+	"devDependencies": {
+		"@jest/globals": "^29.7.0",
+		"express": "^4.19.2",
+		"jest": "^29.7.0",
+		"ts-jest": "^29.1.2",
+		"ts-json-schema-generator": "^2.1.1",
+		"typedoc": "^0.25.13",
+		"typescript": "^5.4.5"
+	},
+	"dependencies": {
+		"jose": "^5.3.0"
+	}
+}
