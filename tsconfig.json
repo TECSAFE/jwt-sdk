@@ -3,6 +3,7 @@
     "target": "ES2016",
     "sourceMap": true,
     "moduleResolution": "NodeNext",
+    "module": "NodeNext",
     "outDir": "./dist",
     "skipLibCheck": true,
     "esModuleInterop": true,

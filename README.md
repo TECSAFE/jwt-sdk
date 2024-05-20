@@ -45,6 +45,8 @@ $TOKEN = 'eyJhbGci...';
 
 $jwk = Tecsafe\OFCP\JWT\SDK\get_jwk();
 $body = Tecsafe\OFCP\JWT\SDK\parse_jwt_customer($TOKEN, $jwk);
+// same as above, if you don't want to validate the signature
+$body = Tecsafe\OFCP\JWT\SDK\parse_jwt_customer($TOKEN);
 ```
 
 **JsonSchema**:
