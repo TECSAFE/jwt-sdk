@@ -4,7 +4,7 @@ import { readFileSync, existsSync, rmSync } from 'fs';
 import { join } from 'path';
 
 describe('jwk', () => {
-  const CACHE_FILE = join(__dirname, '../php/sdk/jwk-cache.json');
+  const CACHE_FILE = join(__dirname, '../src/php/sdk/jwk-cache.json');
 
   let server: any;
   let customer: string;

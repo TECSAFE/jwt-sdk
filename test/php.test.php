@@ -1,9 +1,9 @@
 <?php
 
-include "../php/sdk/Cache.php";
-include "../php/sdk/Parse.php";
+include "../src/php/sdk/Cache.php";
+include "../src/php/sdk/Parse.php";
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 switch(getenv('STAGE')) {
   case 'getJWK':

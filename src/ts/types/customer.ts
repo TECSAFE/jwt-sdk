@@ -1,4 +1,4 @@
-import {JwtBase, JwtType} from './base.js';
+import {JwtBase, JwtType} from './base';
 
 /**
  * The structure of a JWT token for a customer of an authenticated sales channel

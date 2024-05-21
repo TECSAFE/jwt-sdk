@@ -1,5 +1,4 @@
-import { JwtBase, JwtType, JwtCustomer, JwtInternal, JwtSalesChannel } from '../types/index.js';
-import { getJWK } from './jwk.js';
+import { JwtBase, JwtType, JwtCustomer, JwtInternal, JwtSalesChannel } from '../types/index';
 import { jwtVerify, createLocalJWKSet } from 'jose';
 
 /**
@@ -19,7 +18,6 @@ export async function parseUnknownJwt(token: string, jwk?: ReturnType<typeof cre
       const payload = JSON.parse(atob(parts[1]));
       return payload as any as JwtBase;
     } else {
-      const jwk = await getJWK();
       const { payload } = await jwtVerify(token, jwk);
       return payload as any as JwtBase;
     }
