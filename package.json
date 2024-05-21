@@ -1,4 +1,5 @@
 {
+  "name": "@tecsafe/jwt-sdk",
 	"type": "module",
   "version": "IN-DEV",
   "description": "The SDK for token parsing and validation against the JWKS. Also contains the types of token bodies.",
