@@ -47,3 +47,20 @@ jobs:
       # Run tests
       - name: Test
         run: pnpm test
+      
+      # Final touches
+      - name: Publish php source code to TECSAFE/jwt-sdk-php repository
+        run: |
+          git clone git@github.com:TECSAFE/jwt-sdk-php.git
+          rm -rf jwt-sdk-php/*
+          mkdir -p jwt-sdk-php/src
+          cp -r src/php/ jwt-sdk-php/src/
+          cp LICENSE composer.json composer.lock jwt-sdk-php/
+          echo "WARNING: This repository is automatically generated from the jwt-sdk repository." > jwt-sdk-php/README.md
+          echo "Do not edit files in this repository directly." >> jwt-sdk-php/README.md
+          echo "" >> jwt-sdk-php/README.md
+          cat README.md >> jwt-sdk-php/README.md
+          cd jwt-sdk-php
+          git add .
+          git commit -m "Update to version $(echo $GITHUB_REF | sed 's/refs\/tags\///')"
+          git push
