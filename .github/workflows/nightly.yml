@@ -55,6 +55,8 @@ jobs:
           ssh-private-key: ${{ secrets.PHP_SECRET }}
       - name: Publish php source code to TECSAFE/jwt-sdk-php repository
         run: |
+          git config --global user.email "noreply@tecsafe.de"
+          git config --global user.name "CI Bot"
           git clone git@github.com:TECSAFE/jwt-sdk-php.git
           rm -rf jwt-sdk-php/*
           mkdir -p jwt-sdk-php/src
