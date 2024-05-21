@@ -47,26 +47,34 @@ jobs:
       # Final touches
       - name: Replace version in package.json to be semver compatible
         run: sed -i "s/IN-DEV/$(echo $GITHUB_REF | sed 's/refs\/tags\///')/" package.json
-      - name: Clone php-release branch
-        run: git clone --branch=php-release --single-branch git@github.com:TECSAFE/jwt-sdk.git
-        continue-on-error: true
-      - name: Publish PHP code to php-release branch
-        run: |
-          mkdir -p php-release
-          cp -rf src/ composer.json composer.lock LICENSE php-release/
-          cd php-release
-          git add .
-          git commit -m "Release $GITHUB_REF"
-          git branch -M php-release
-          git push
       
       # Publish to registries
       - name: Publish package on NPM
         run: pnpm publish . --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_SECRET}}
-      - name: Publish package on Packagist
+      
+      # PHP Repo Sync
+      - name: Load SSH Key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.PHP_SECRET }}
+      - name: Publish php source code to TECSAFE/jwt-sdk-php repository
         run: |
-          compose config --global http-basic.repo.packagist.com ${{secrets.PACKAGIST_USER}} ${{secrets.PACKAGIST_SECRET}}
-          composer update
-
+          git config --global user.email "noreply@tecsafe.de"
+          git config --global user.name "CI Bot"
+          git clone git@github.com:TECSAFE/jwt-sdk-php.git
+          rm -rf jwt-sdk-php/*
+          mkdir -p jwt-sdk-php/src
+          cp -r src/php/ jwt-sdk-php/src/
+          cp LICENSE composer.json composer.lock jwt-sdk-php/
+          echo "WARNING: This repository is automatically generated from the jwt-sdk repository." > jwt-sdk-php/README.md
+          echo "Do not edit files in this repository directly." >> jwt-sdk-php/README.md
+          echo "" >> jwt-sdk-php/README.md
+          cat README.md >> jwt-sdk-php/README.md
+          cd jwt-sdk-php
+          git add .
+          git commit -m "Update to version $(echo $GITHUB_REF | sed 's/refs\/tags\///')"
+          git push
+          git tag $(echo $GITHUB_REF | sed 's/refs\/tags\///')
+          git push origin --tags
