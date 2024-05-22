@@ -20,7 +20,7 @@ composer require tecsafe/jwt-sdk
 **JsonSchema**:
 
 ```sh
-curl -O <to be defined>
+curl -O https://tecsafe.github.io/jwt-sdk/json-schema/latest.json
 ```
 
 ## Usage
@@ -37,6 +37,8 @@ const body = parseUnknownJwt(TOKEN, jwk);
 // or if you don't want to validate the signature, and just want to parse the token
 const body = parseUnknownJwt(TOKEN);
 ```
+
+Visit https://tecsafe.github.io/jwt-sdk/ for a more detailed documentation.
 
 **PHP**:
 

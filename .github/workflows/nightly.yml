@@ -71,7 +71,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          publish_dir: ./json-schema
           destination_dir: json-schema
           publish_branch: gh-pages
           keep_files: true
