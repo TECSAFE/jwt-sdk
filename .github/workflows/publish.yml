@@ -50,14 +50,12 @@ jobs:
       
       # JSON Schema Sync
       - name: Prepare json-schema publication
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           mkdir -p json-schema
           cp schema.json json-schema/dev.json
           cp schema.json json-schema/$(echo $GITHUB_REF | sed 's/refs\/tags\///').json
           cp schema.json json-schema/latest.json
       - name: Publish json-schema
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
