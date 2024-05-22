@@ -51,7 +51,7 @@ jobs:
       # Update Documentation
       - name: Generate Documentation
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: pnpm doc
+        run: pnpm docs
       - name: Publish Documentation
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: JamesIves/github-pages-deploy-action@v4
