@@ -48,6 +48,24 @@ jobs:
       - name: Replace version in package.json to be semver compatible
         run: sed -i "s/IN-DEV/$(echo $GITHUB_REF | sed 's/refs\/tags\///')/" package.json
       
+      # JSON Schema Sync
+      - name: Prepare json-schema publication
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          mkdir -p json-schema
+          cp schema.json json-schema/dev.json
+          cp schema.json json-schema/$(echo $GITHUB_REF | sed 's/refs\/tags\///').json
+          cp schema.json json-schema/latest.json
+      - name: Publish json-schema
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          destination_dir: json-schema
+          publish_branch: gh-pages
+          keep_files: true
+      
       # Publish to registries
       - name: Publish package on NPM
         run: pnpm publish . --access public --no-git-checks
