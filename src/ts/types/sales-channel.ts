@@ -1,16 +1,6 @@
 import {JwtBase, JwtType} from './base';
 
 /**
- * The meta object for a sales channel token
- */
-export interface JwtSalesChannelMeta {
-  /**
-   * The sales channel access key
-   */
-  accessKey: string;
-}
-
-/**
  * The structure of a JWT token for a registered sales channel
  * Sales channels can request customer tokens with this token
  */
@@ -28,5 +18,7 @@ export interface JwtSalesChannel extends JwtBase {
   /**
    * @inheritdoc
    */
-  meta: JwtSalesChannelMeta;
+  meta: {
+    // TODO: add sales channel specific fields
+  }
 }
