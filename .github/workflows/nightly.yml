@@ -44,10 +44,14 @@ jobs:
       - name: Generate PHP
         run: pnpm generate
       
-      # Run tests
-      - name: Test
+      # Run JS tests
+      - name: Test JS
         run: pnpm test
-      
+
+      # Run PHP tests
+      - name: Test PHP
+        run: composer run test
+
       # Update Documentation
       - name: Generate Documentation
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
