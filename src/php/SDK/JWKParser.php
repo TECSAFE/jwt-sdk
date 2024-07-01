@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tecsafe\OFCP\JWT\SDK;
 
+use Firebase\JWT\JWK;
 use Firebase\JWT\JWT;
 use PHPModelGenerator\Exception\ErrorRegistryException;
 use Tecsafe\OFCP\JWT\Types\JwtBase;
@@ -11,31 +12,33 @@ use Tecsafe\OFCP\JWT\Types\JwtCustomer;
 use Tecsafe\OFCP\JWT\Types\JwtInternal;
 use Tecsafe\OFCP\JWT\Types\JwtSalesChannel;
 
-class JWK
+
+class JWKParser
 {
     /**
      * Internal base function to parse a JWT
      *
      * @param array<mixed, mixed>|null $jwk
+     * @throws \Exception
      */
     public static function parseJwk(string $jwt, ?array $jwk): ?array
     {
-        try {
-            if ($jwk !== null) {
-                $jwk = \Firebase\JWT\JWK::parseKey($jwk);
-                //$content = JWT::decode($jwt, $jwk);
-                $content = [];
-            } else {
-                $parts = \explode(".", $jwt);
-                if (count($parts) !== 2) {
-                    throw new \Exception("Invalid JWT format");
-                }
-                $content = \json_decode(base64_decode($parts[1]), true);
+        if ($jwk !== null) {
+            $keys = JWK::parseKeySet($jwk);
+            $decoded = JWT::decode($jwt, $keys);
+
+            $content =\json_decode(\json_encode($decoded), true);
+        } else {
+            $parts = \explode(".", $jwt);
+
+            if (count($parts) !== 2) {
+                throw new \Exception("Invalid JWT format");
             }
-            return $content;
-        } catch (\Exception $ignored) {
-            return null;
+
+            $content = \json_decode(base64_decode($parts[1]), true);
         }
+
+        return $content;
     }
 
     /**
