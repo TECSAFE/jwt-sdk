@@ -39,10 +39,14 @@ jobs:
         run: pnpm split
       - name: Generate PHP
         run: pnpm generate
-      
-      # Run tests
-      - name: Test
+
+        # Run JS tests
+      - name: Test JS
         run: pnpm test
+
+        # Run PHP tests
+      - name: Test PHP
+        run: composer run test
       
       # Final touches
       - name: Replace version in package.json to be semver compatible
