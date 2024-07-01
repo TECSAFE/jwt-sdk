@@ -42,13 +42,49 @@ Visit https://tecsafe.github.io/jwt-sdk/ for a more detailed documentation.
 
 **PHP**:
 
+First of all, you need an implementation for 
+ - [psr/http-factory](https://packagist.org/providers/psr/http-factory-implementation)
+ - [psr/simple-cache](https://packagist.org/providers/psr/simple-cache-implementation)
+ - [psr/http-client](https://packagist.org/providers/psr/http-client-implementation)
+
+
+Example:
+
+```shell
+composer require nyholm/psr7 symfony/http-client symfony/cache
+```
+
 ```php
+<?php
+
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Symfony\Component\HttpClient\Psr18Client;
+use Tecsafe\OFCP\JWT\SDK\JWKLoader;
+use Tecsafe\OFCP\JWT\SDK\JWKParser;
+
+/* Load JWKS from URL */
+$jwkUri = "https://api-gateway.tecsafe.example.com/.well-known/jwks";
+
+$jwkLoader = new JWKLoader(new Psr18Client(), new Psr17Factory());
+$jwk = $jwkLoader->getJWK($jwkUri);
+
+
+/* Optional: Decorate JWKLoader with Cache */
+use Tecsafe\OFCP\JWT\SDK\CachedJWKLoader;
+use Symfony\Component\Cache\Psr16Cache;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+
+$cachedLoader = new CachedJWKLoader($jwkLoader, new Psr16Cache(new ArrayAdapter()));
+$jwk = $jwkLoader->getJWK($jwkUri);
+$jwk = $jwkLoader->getJWK($jwkUri); // Loaded from cache
+
+
+/* Parse and validate tokens */
 $TOKEN = 'eyJhbGci...';
 
-$jwk = Tecsafe\OFCP\JWT\SDK\get_jwk();
-$body = Tecsafe\OFCP\JWT\SDK\parse_jwt_customer($TOKEN, $jwk);
+$body = JWKParser::parseCustomerJwk($TOKEN, $jwk);
 // same as above, if you don't want to validate the signature
-$body = Tecsafe\OFCP\JWT\SDK\parse_jwt_customer($TOKEN);
+$body = JWKParser::parseCustomerJwk($TOKEN);
 ```
 
 **JsonSchema**:
