@@ -12,8 +12,7 @@ use Tecsafe\OFCP\JWT\Types\JwtCustomer;
 use Tecsafe\OFCP\JWT\Types\JwtInternal;
 use Tecsafe\OFCP\JWT\Types\JwtSalesChannel;
 
-
-class JWKParser
+class JWTParser
 {
     /**
      * Internal base function to parse a JWT
@@ -21,7 +20,7 @@ class JWKParser
      * @param array<mixed, mixed>|null $jwk
      * @throws \Exception
      */
-    public static function parseJwk(string $jwt, ?array $jwk): ?array
+    public static function parseJwt(string $jwt, ?array $jwk): ?array
     {
         if ($jwk !== null) {
             $keys = JWK::parseKeySet($jwk);
@@ -48,9 +47,9 @@ class JWKParser
      *
      * @throws ErrorRegistryException
      */
-    public static function parseBaseJwk(string $jwt, ?array $jwk): ?JwtBase
+    public static function parseBaseJwt(string $jwt, ?array $jwk): ?JwtBase
     {
-        $content = self::parseJwk($jwt, $jwk);
+        $content = self::parseJwt($jwt, $jwk);
 
         if ($content === null) {
             return null;
@@ -66,9 +65,9 @@ class JWKParser
      *
      * @throws ErrorRegistryException
      */
-    public static function parseCustomerJwk(string $jwt, ?array $jwk): ?JwtCustomer
+    public static function parseCustomerJwt(string $jwt, ?array $jwk): ?JwtCustomer
     {
-        $content = self::parseJwk($jwt, $jwk);
+        $content = self::parseJwt($jwt, $jwk);
 
         if ($content === null) {
             return null;
@@ -84,9 +83,9 @@ class JWKParser
      *
      * @throws ErrorRegistryException
      */
-    public static function parseInternalJwk(string $jwt, ?array $jwk): ?JwtInternal
+    public static function parseInternalJwt(string $jwt, ?array $jwk): ?JwtInternal
     {
-        $content = self::parseJwk($jwt, $jwk);
+        $content = self::parseJwt($jwt, $jwk);
 
         if ($content === null) {
             return null;
@@ -102,9 +101,9 @@ class JWKParser
      *
      * @throws ErrorRegistryException
      */
-    public static function parseSalesChannelJwk(string $jwt, ?array $jwk): ?JwtSalesChannel
+    public static function parseSalesChannelJwt(string $jwt, ?array $jwk): ?JwtSalesChannel
     {
-        $content = self::parseJwk($jwt, $jwk);
+        $content = self::parseJwt($jwt, $jwk);
 
         if ($content === null) {
             return null;

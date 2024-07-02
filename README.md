@@ -60,7 +60,7 @@ composer require nyholm/psr7 symfony/http-client symfony/cache
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;
 use Tecsafe\OFCP\JWT\SDK\JWKLoader;
-use Tecsafe\OFCP\JWT\SDK\JWKParser;
+use Tecsafe\OFCP\JWT\SDK\JWTParser;
 
 /* Load JWKS from URL */
 $jwkUri = "https://api-gateway.tecsafe.example.com/.well-known/jwks";
@@ -82,9 +82,9 @@ $jwk = $cachedLoader->getJWK($jwkUri); // Loaded from cache
 /* Parse and validate tokens */
 $TOKEN = 'eyJhbGci...';
 
-$body = JWKParser::parseCustomerJwk($TOKEN, $jwk);
+$body = JWTParser::parseCustomerJwt($TOKEN, $jwk);
 // same as above, if you don't want to validate the signature
-$body = JWKParser::parseCustomerJwk($TOKEN);
+$body = JWTParser::parseCustomerJwt($TOKEN);
 ```
 
 **JsonSchema**:
