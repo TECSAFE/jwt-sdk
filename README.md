@@ -75,8 +75,8 @@ use Symfony\Component\Cache\Psr16Cache;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 $cachedLoader = new CachedJWKLoader($jwkLoader, new Psr16Cache(new ArrayAdapter()));
-$jwk = $jwkLoader->getJWK($jwkUri);
-$jwk = $jwkLoader->getJWK($jwkUri); // Loaded from cache
+$jwk = $cachedLoader->getJWK($jwkUri);
+$jwk = $cachedLoader->getJWK($jwkUri); // Loaded from cache
 
 
 /* Parse and validate tokens */
