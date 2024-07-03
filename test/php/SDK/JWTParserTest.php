@@ -36,7 +36,22 @@ class JWTParserTest extends TestCase
 
     public function testParseCustomerJwk()
     {
-        $jwtCustomer = JWTParser::parseCustomerJwt(self::CUSTOMER_JWT, $this->getJWKS());
+        $customerJwt = [
+            "type"=> "customer",
+            "exp"=> 1782654777,
+            "iat"=> 1719409977,
+            "nbf"=> 1719409977,
+            "iss"=> "api-gateway",
+            "sub"=> "1234567890",
+            "meta"=> [
+                "salesChannelId"=> "foobar",
+                "customerGroup"=> "foobaz",
+            ],
+        ];
+
+        $customerJwt = $this->buildJwt($customerJwt);
+
+        $jwtCustomer = JWTParser::parseCustomerJwt($customerJwt, $this->getJWKS());
         $this->assertEquals('customer', $jwtCustomer->getType());
 
         $meta = $jwtCustomer->getMeta();
@@ -46,16 +61,28 @@ class JWTParserTest extends TestCase
         $this->assertTrue(\method_exists($meta, 'getSalesChannelId'), 'Class does not have method getSalesChannelId');
         $this->assertTrue(\method_exists($meta, 'getCustomerGroup'), 'Class does not have method getCustomerGroup');
 
-
-        /*$this->assertEquals(new JwtCustomer_Meta6659a82ea5bb2([
-            'salesChannelId' => 'foobar',
-            'customerGroup' => 'foobaz',
-        ]), $jwtCustomer->getMeta());*/
         $this->assertEquals('api-gateway', $jwtCustomer->getIss());
     }
 
     private function getJWKS(): array
     {
         return \json_decode(\file_get_contents(__DIR__ . '/../Resources/jwks.json'), true);
+    }
+
+    private function buildJwt(array $payload): string
+    {
+        $key = $this->getPrivateKey();
+        $keyId = '2a5a2afd-6a49-4890-a8c9-519405fc295c';
+        $alg = 'RS256';
+        $header = [
+            'typ' => 'JWT',
+        ];
+
+        return \Firebase\JWT\JWT::encode($payload, $key, $alg, $keyId, $header);
+    }
+
+    private function getPrivateKey(): \OpenSSLAsymmetricKey
+    {
+        return \openssl_pkey_get_private(\file_get_contents(__DIR__ . '/../Resources/private-key.pem'));
     }
 }
