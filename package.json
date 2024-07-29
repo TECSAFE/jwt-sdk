@@ -29,7 +29,7 @@
 	"scripts": {
 		"build": "tsc",
 		"doc": "typedoc --out docs src/ts/",
-		"schema": "ts-json-schema-generator --path 'src/ts/types/**/*.ts' --out 'schema.json'",
+		"schema": "ts-json-schema-generator -f tsconfig.json --path 'src/ts/types/**/*.ts' --out 'schema.json'",
 		"split": "node split.js",
 		"generate": "php generate.php",
 		"test": "node test/example/generate.js && jest --runInBand"
