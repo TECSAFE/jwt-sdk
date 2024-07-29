@@ -59,21 +59,21 @@ class JWTParserTest extends TestCase
 
     private function getCustomerJWT(): string
     {
-        return \file_get_contents(__DIR__ . '/../../example/jwt/JwtCustomer.json.jwt');
+        return \file_get_contents(__DIR__ . '/../../example/keys/JwtCustomer.json.jwt');
     }
 
     private function getInternalJWT(): string
     {
-        return \file_get_contents(__DIR__ . '/../../example/jwt/JwtInternal.json.jwt');
+        return \file_get_contents(__DIR__ . '/../../example/keys/JwtInternal.json.jwt');
     }
 
     private function getSalesChannelJWT(): string
     {
-        return \file_get_contents(__DIR__ . '/../../example/jwt/JwtSalesChannel.json.jwt');
+        return \file_get_contents(__DIR__ . '/../../example/keys/JwtSalesChannel.json.jwt');
     }
 
     private function getBaseJWT(): string
     {
-        return \file_get_contents(__DIR__ . '/../../example/jwt/invalid.jwt');
+        return \file_get_contents(__DIR__ . '/../../example/keys/invalid.jwt');
     }
 }
