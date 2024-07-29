@@ -28,6 +28,24 @@ export interface JwtCustomer extends JwtBase {
      */
     customerGroup: string;
 
-    // TODO: add customer specific fields
+    /**
+     * Is the customer an guest customer?
+     */
+    guest: boolean;
+
+    /**
+     * A from the external sales channel provided customer id
+     */
+    customerIdentifier: string | null;
+
+    /**
+     * The sales channel access key of the headless shop
+     */
+    accessKey: string;
+
+    /**
+     * The sales channel context token of the headless shop
+     */
+    contextToken: string;
   }
 }

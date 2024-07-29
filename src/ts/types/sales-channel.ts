@@ -19,6 +19,9 @@ export interface JwtSalesChannel extends JwtBase {
    * @inheritdoc
    */
   meta: {
-    // TODO: add sales channel specific fields
+    /**
+     * The sales channel access key of the headless shop
+     */
+    accessKey: string;
   }
 }
