@@ -65,9 +65,28 @@
           "additionalProperties": false,
           "description": "The meta object contains additional information about the token, or the token's owner",
           "properties": {
+            "accessKey": {
+              "description": "The sales channel access key of the headless shop",
+              "type": "string"
+            },
+            "contextToken": {
+              "description": "The sales channel context token of the headless shop",
+              "type": "string"
+            },
             "customerGroup": {
               "description": "The group of the customer inside of the sales channel",
               "type": "string"
+            },
+            "customerIdentifier": {
+              "description": "A from the external sales channel provided customer id",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "guest": {
+              "description": "Is the customer an guest customer?",
+              "type": "boolean"
             },
             "salesChannelId": {
               "description": "The sales channel id of the customer",
@@ -76,7 +95,11 @@
           },
           "required": [
             "salesChannelId",
-            "customerGroup"
+            "customerGroup",
+            "guest",
+            "customerIdentifier",
+            "accessKey",
+            "contextToken"
           ],
           "type": "object"
         },
@@ -182,6 +205,15 @@
         "meta": {
           "additionalProperties": false,
           "description": "The meta object contains additional information about the token, or the token's owner",
+          "properties": {
+            "accessKey": {
+              "description": "The sales channel access key of the headless shop",
+              "type": "string"
+            }
+          },
+          "required": [
+            "accessKey"
+          ],
           "type": "object"
         },
         "nbf": {
