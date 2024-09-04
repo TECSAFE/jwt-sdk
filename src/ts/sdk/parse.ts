@@ -1,5 +1,5 @@
 import { JwtBase, JwtType, JwtCustomer, JwtInternal, JwtSalesChannel } from '../types/index';
-import { jwtVerify, createLocalJWKSet } from 'jose';
+import { type createLocalJWKSet } from 'jose';
 
 type JwkType = ReturnType<typeof createLocalJWKSet>;
 
@@ -21,6 +21,7 @@ export async function parseUnknownJwt(token: string, jwk?: JwkType): Promise<Jwt
       if (!Object.values(JwtType).includes(payload.type)) return null;
       return payload as any as JwtBase;
     } else {
+      const { jwtVerify } = await import('jose');
       const { payload } = await jwtVerify(token, jwk);
       if (!Object.values(JwtType).includes((payload as any).type)) return null;
       return payload as any as JwtBase;
