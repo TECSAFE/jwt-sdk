@@ -1,2 +1,2 @@
-export * from './jwk';
-export * from './parse';
+export * from './jwk.js';
+export * from './parse.js';
