@@ -1,4 +1,4 @@
-import { type createLocalJWKSet } from 'jose';
+import type { createLocalJWKSet } from 'jose';
 
 type createLocalJWKSetReturnType = ReturnType<typeof createLocalJWKSet>;
 

@@ -1,5 +1,5 @@
 import { JwtBase, JwtType, JwtCustomer, JwtInternal, JwtSalesChannel } from '../types/index';
-import { type createLocalJWKSet } from 'jose';
+import type { createLocalJWKSet } from 'jose';
 
 type JwkType = ReturnType<typeof createLocalJWKSet>;
 

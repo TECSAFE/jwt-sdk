@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "ESNext",
+    "module": "CommonJS",
     "sourceMap": true,
     "moduleResolution": "Node",
-    "outDir": "./dist",
+    "outDir": "./dist/cjs",
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "declaration": true
+    "declaration": true,
+    "declarationDir": "./dist/types"
   },
   "exclude": [
     "node_modules",
