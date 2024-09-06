@@ -5,11 +5,11 @@
 	"description": "The SDK for token parsing and validation against the JWKS. Also contains the types of token bodies.",
 	"private": false,
 	"license": "MIT",
-	"main": "dist/cjs/index.cjs",
+	"main": "dist/cjs/index.js",
 	"module": "dist/esm/index.js",
 	"types": "dist/types/index.d.ts",
 	"exports": {
-		"require": "./dist/cjs/index.cjs",
+		"require": "./dist/cjs/index.js",
 		"import": "./dist/esm/index.js"
 	},
 	"files": [
