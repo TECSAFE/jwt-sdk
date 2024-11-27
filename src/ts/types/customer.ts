@@ -24,14 +24,29 @@ export interface JwtCustomer extends JwtBase {
     salesChannelId: string;
 
     /**
-     * The group of the customer inside of the sales channel
+     * The group id of the customer inside of the sales channel
      */
-    customerGroup: string;
+    customerGroupId: string;
+
+    /**
+     * The external group id of the customer
+     */
+    externalGroupId: string | null;
+
+    /**
+     * Currency of the customer
+     */
+    currencyId: string;
 
     /**
      * Is the customer an guest customer?
      */
     guest: boolean;
+
+    /**
+     * The customer's email address, in most cases only available if guest is false
+     */
+    email: string | null;
 
     /**
      * A from the external sales channel provided customer id
