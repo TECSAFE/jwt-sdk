@@ -29,9 +29,9 @@ export interface JwtCustomer extends JwtBase {
     customerGroupId: string;
 
     /**
-     * The external group id of the customer
+     * The external group name of the customer
      */
-    externalGroupId: string | null;
+    externalGroupName: string | null;
 
     /**
      * Currency of the customer
