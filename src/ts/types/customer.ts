@@ -39,6 +39,11 @@ export interface JwtCustomer extends JwtBase {
     currencyId: string;
 
     /**
+     * Currency ISO 4217 code
+     */
+    currencyIso: string;
+
+    /**
      * Is the customer an guest customer?
      */
     guest: boolean;
