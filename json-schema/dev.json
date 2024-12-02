@@ -77,16 +77,17 @@
               "description": "Currency of the customer",
               "type": "string"
             },
+            "currencyIso": {
+              "description": "Currency ISO 4217 code",
+              "type": "string"
+            },
             "customerGroupId": {
               "description": "The group id of the customer inside of the sales channel",
               "type": "string"
             },
             "customerIdentifier": {
               "description": "A from the external sales channel provided customer id",
-              "type": [
-                "string",
-                "null"
-              ]
+              "type": "string"
             },
             "email": {
               "description": "The customer's email address, in most cases only available if guest is false",
@@ -95,8 +96,8 @@
                 "null"
               ]
             },
-            "externalGroupId": {
-              "description": "The external group id of the customer",
+            "externalGroupName": {
+              "description": "The external group name of the customer",
               "type": [
                 "string",
                 "null"
@@ -114,8 +115,9 @@
           "required": [
             "salesChannelId",
             "customerGroupId",
-            "externalGroupId",
+            "externalGroupName",
             "currencyId",
+            "currencyIso",
             "guest",
             "email",
             "customerIdentifier",
