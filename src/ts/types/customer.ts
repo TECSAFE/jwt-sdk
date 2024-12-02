@@ -29,14 +29,19 @@ export interface JwtCustomer extends JwtBase {
     customerGroupId: string;
 
     /**
-     * The external group id of the customer
+     * The external group name of the customer
      */
-    externalGroupId: string | null;
+    externalGroupName: string | null;
 
     /**
      * Currency of the customer
      */
     currencyId: string;
+
+    /**
+     * Currency ISO 4217 code
+     */
+    currencyIso: string;
 
     /**
      * Is the customer an guest customer?
@@ -51,7 +56,7 @@ export interface JwtCustomer extends JwtBase {
     /**
      * A from the external sales channel provided customer id
      */
-    customerIdentifier: string | null;
+    customerIdentifier: string;
 
     /**
      * The sales channel access key of the headless shop
