@@ -56,7 +56,7 @@ export interface JwtCustomer extends JwtBase {
     /**
      * A from the external sales channel provided customer id
      */
-    customerIdentifier: string | null;
+    customerIdentifier: string;
 
     /**
      * The sales channel access key of the headless shop
