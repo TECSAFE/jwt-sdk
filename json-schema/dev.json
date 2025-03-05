@@ -77,6 +77,10 @@
               "description": "The user's last name",
               "type": "string"
             },
+            "oidcSub": {
+              "description": "The OIDC providers subject identifier",
+              "type": "string"
+            },
             "organization": {
               "description": "The user's organization",
               "type": "string"
@@ -86,7 +90,8 @@
             "email",
             "firstName",
             "lastName",
-            "organization"
+            "organization",
+            "oidcSub"
           ],
           "type": "object"
         },
