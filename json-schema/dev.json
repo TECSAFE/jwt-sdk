@@ -45,6 +45,76 @@
       ],
       "type": "object"
     },
+    "JwtCockpit": {
+      "additionalProperties": false,
+      "description": "The structure of a JWT token for an cockpit user.",
+      "properties": {
+        "exp": {
+          "description": "Unix timestamp of when the token expires",
+          "type": "number"
+        },
+        "iat": {
+          "description": "Unix timestamp of when the token was issued",
+          "type": "number"
+        },
+        "iss": {
+          "description": "The issuer of the token, usually will equal to \"api-gateway\"",
+          "type": "string"
+        },
+        "meta": {
+          "additionalProperties": false,
+          "description": "The meta object contains additional information about the token, or the token's owner",
+          "properties": {
+            "email": {
+              "description": "The user's email address",
+              "type": "string"
+            },
+            "firstName": {
+              "description": "The user's first name",
+              "type": "string"
+            },
+            "lastName": {
+              "description": "The user's last name",
+              "type": "string"
+            },
+            "organization": {
+              "description": "The user's organization",
+              "type": "string"
+            }
+          },
+          "required": [
+            "email",
+            "firstName",
+            "lastName",
+            "organization"
+          ],
+          "type": "object"
+        },
+        "nbf": {
+          "description": "Unix timestamp of when the token becomes active",
+          "type": "number"
+        },
+        "sub": {
+          "description": "The user id of the cockpit user",
+          "type": "string"
+        },
+        "type": {
+          "const": "cockpit",
+          "description": "For cockpit tokens, the type will always be \"cockpit\"",
+          "type": "string"
+        }
+      },
+      "required": [
+        "exp",
+        "iat",
+        "iss",
+        "meta",
+        "nbf",
+        "sub",
+        "type"
+      ],
+      "type": "object"
+    },
     "JwtCustomer": {
       "additionalProperties": false,
       "description": "The structure of a JWT token for a customer of an authenticated sales channel",
@@ -268,6 +338,7 @@
       "enum": [
         "customer",
         "sales-channel",
+        "cockpit",
         "internal"
       ],
       "type": "string"
