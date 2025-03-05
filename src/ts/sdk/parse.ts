@@ -1,4 +1,4 @@
-import { JwtBase, JwtType, JwtCustomer, JwtInternal, JwtSalesChannel } from '../types/index.js';
+import { JwtBase, JwtType, JwtCustomer, JwtInternal, JwtSalesChannel, JwtCockpit } from '../types/index.js';
 import type { createLocalJWKSet } from 'jose';
 
 type JwkType = ReturnType<typeof createLocalJWKSet>;
@@ -60,4 +60,14 @@ export async function parseSalesChannelJwt(token: string, jwk?: JwkType): Promis
   const jwt = await parseUnknownJwt(token, jwk);
   if (!jwt || jwt.type !== JwtType.SALES_CHANNEL) return null;
   return jwt as any as JwtSalesChannel;
+}
+
+/**
+ * Parse a JWT token and validate it as a cockpit token.
+ * Uses internally the {@link parseUnknownJwt} function.
+ */
+export async function parseCockpitJwt(token: string, jwk?: JwkType): Promise<JwtCockpit | null> {
+  const jwt = await parseUnknownJwt(token, jwk);
+  if (!jwt || jwt.type !== JwtType.COCKPIT) return null;
+  return jwt as any as JwtCockpit;
 }
