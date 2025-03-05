@@ -37,5 +37,10 @@ export interface JwtCockpit extends JwtBase {
      * The user's organization
      */
     organization: string
+
+    /**
+     * The OIDC providers subject identifier
+     */
+    oidcSub: string
   }
 }
