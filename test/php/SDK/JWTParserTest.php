@@ -96,6 +96,19 @@ class JWTParserTest extends TestCase
         $this->assertEquals($this->getCustomer()['type'], $jwtCustomer->getType());
     }
 
+    public function testParseCustomerJwtWithoutJwks(): void
+    {
+        $jwtCustomer = JWTParser::parseCustomerJwt($this->getCustomer(true), null);
+        $this->assertEquals('customer', $jwtCustomer->getType());
+
+        $meta = $jwtCustomer->getMeta();
+
+        $this->assertObjectHasProperty('salesChannelId', $meta);
+        $this->assertObjectHasProperty('customerGroupId', $meta);
+        $this->assertTrue(\method_exists($meta, 'getSalesChannelId'), 'Class does not have method getSalesChannelId');
+        $this->assertTrue(\method_exists($meta, 'getCustomerGroupId'), 'Class does not have method getCustomerGroup');
+    }
+
     /**
      * Test: Parse the Base JWT
      * @return void
