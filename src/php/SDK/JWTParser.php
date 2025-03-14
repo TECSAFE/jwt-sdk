@@ -11,6 +11,7 @@ use Tecsafe\OFCP\JWT\Types\JwtBase;
 use Tecsafe\OFCP\JWT\Types\JwtCustomer;
 use Tecsafe\OFCP\JWT\Types\JwtInternal;
 use Tecsafe\OFCP\JWT\Types\JwtSalesChannel;
+use Tecsafe\OFCP\JWT\Types\JwtCockpit;
 
 class JWTParser
 {
@@ -110,5 +111,23 @@ class JWTParser
         }
 
         return new JwtSalesChannel($content);
+    }
+
+    /**
+     * Parse a JWT and return a JwtCockpit object
+     * 
+     * @param array<mixed>|null $jwk
+     * 
+     * @throws ErrorRegistryException
+     */
+    public static function parseCockpitJwt(string $jwt, ?array $jwk): ?JwtCockpit
+    {
+        $content = self::parseJwt($jwt, $jwk);
+
+        if ($content === null) {
+            return null;
+        }
+
+        return new JwtCockpit($content);
     }
 }

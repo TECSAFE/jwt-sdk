@@ -1,4 +1,4 @@
-import {JwtBase, JwtType} from './base';
+import {JwtBase, JwtType} from './base.js';
 
 /**
  * The structure of a JWT token for an internal micro service.

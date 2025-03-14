@@ -10,6 +10,11 @@ export enum JwtType {
   SALES_CHANNEL = 'sales-channel',
 
   /**
+   * Token for a cockpit user
+   */
+  COCKPIT = 'cockpit',
+
+  /**
    * Token for an internal user
    */
   INTERNAL = 'internal',

@@ -1,4 +1,4 @@
-import {JwtBase, JwtType} from './base';
+import {JwtBase, JwtType} from './base.js';
 
 /**
  * The structure of a JWT token for a registered sales channel
@@ -19,6 +19,9 @@ export interface JwtSalesChannel extends JwtBase {
    * @inheritdoc
    */
   meta: {
-    // TODO: add sales channel specific fields
+    /**
+     * The sales channel access key of the headless shop
+     */
+    accessKey: string;
   }
 }
