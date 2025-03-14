@@ -31,7 +31,7 @@ class JWTParser
         } else {
             $parts = \explode(".", $jwt);
 
-            if (count($parts) !== 2) {
+            if (count($parts) !== 3) {
                 throw new \Exception("Invalid JWT format");
             }
 
