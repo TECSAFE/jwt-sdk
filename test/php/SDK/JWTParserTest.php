@@ -34,7 +34,7 @@ class JWTParserTest extends TestCase
         JWTParser::parseBaseJwt(self::UNKNOWN_JWT, $this->getJWKS());
     }
 
-    public function testParseCustomerJwk()
+    public function testParseCustomerJwt()
     {
         $jwtCustomer = JWTParser::parseCustomerJwt(self::CUSTOMER_JWT, $this->getJWKS());
         $this->assertEquals('customer', $jwtCustomer->getType());
@@ -46,11 +46,21 @@ class JWTParserTest extends TestCase
         $this->assertTrue(\method_exists($meta, 'getSalesChannelId'), 'Class does not have method getSalesChannelId');
         $this->assertTrue(\method_exists($meta, 'getCustomerGroup'), 'Class does not have method getCustomerGroup');
 
+        $this->assertEquals('api-gateway', $jwtCustomer->getIss());
+    }
 
-        /*$this->assertEquals(new JwtCustomer_Meta6659a82ea5bb2([
-            'salesChannelId' => 'foobar',
-            'customerGroup' => 'foobaz',
-        ]), $jwtCustomer->getMeta());*/
+    public function testParseCustomerJwtWithoutJwks()
+    {
+        $jwtCustomer = JWTParser::parseCustomerJwt(self::CUSTOMER_JWT, null);
+        $this->assertEquals('customer', $jwtCustomer->getType());
+
+        $meta = $jwtCustomer->getMeta();
+
+        $this->assertObjectHasProperty('salesChannelId', $meta);
+        $this->assertObjectHasProperty('customerGroup', $meta);
+        $this->assertTrue(\method_exists($meta, 'getSalesChannelId'), 'Class does not have method getSalesChannelId');
+        $this->assertTrue(\method_exists($meta, 'getCustomerGroup'), 'Class does not have method getCustomerGroup');
+
         $this->assertEquals('api-gateway', $jwtCustomer->getIss());
     }
 
