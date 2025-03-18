@@ -30,6 +30,11 @@ export interface JwtBase {
   sub: string;
 
   /**
+   * The JWT ID, a unique identifier for the token
+   */
+  jti: string;
+
+  /**
    * Unix timestamp of when the token was issued
    */
   iat: number;
