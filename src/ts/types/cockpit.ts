@@ -1,3 +1,4 @@
+import { CockpitRole } from '../sdk/roles.js';
 import {JwtBase, JwtType} from './base.js';
 
 /**
@@ -18,6 +19,11 @@ export interface JwtCockpit extends JwtBase {
    * @inheritdoc
    */
   meta: {
+    /**
+     * The role of the user
+     */
+    role: CockpitRole;
+
     /**
      * The user's email address
      */

@@ -3,7 +3,7 @@ import { spawn } from 'child_process';
 import { readFileSync } from 'fs';
 import { createLocalJWKSet } from 'jose';
 
-import { getJWK, parseUnknownJwt, parseCustomerJwt, parseInternalJwt, parseSalesChannelJwt } from '../src/ts/index';
+import { getJWK, parseUnknownJwt, parseCustomerJwt, parseInternalJwt, parseSalesChannelJwt, compareRoles } from '../src/ts/index';
 
 describe('jwk', () => {
   let server: any;
@@ -121,6 +121,18 @@ describe('jwk', () => {
       expect(obj).toBeNull();
     });
   });
+
+  describe('allowPlatformAdminAccessOnCompanyAdmin', () => {
+    expect(compareRoles('PLATFORM_ADMIN', 'COMPANY_ADMIN')).toBe(true);
+  })
+
+  describe('allowCompanyAdminAccessOnCompanyAdmin', () => {
+    expect(compareRoles('COMPANY_ADMIN', 'COMPANY_ADMIN')).toBe(true);
+  })
+
+  describe('rejectCompanyAdminAccessOnPlatformAdmin', () => {
+    expect(compareRoles('COMPANY_ADMIN', 'PLATFORM_ADMIN')).toBe(false);
+  })
 
   afterAll(() => {
     server.kill();
