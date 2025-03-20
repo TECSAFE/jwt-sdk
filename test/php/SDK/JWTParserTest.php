@@ -8,6 +8,7 @@ use PHPModelGenerator\Exception\ErrorRegistryException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Tecsafe\OFCP\JWT\SDK\JWTParser;
 use PHPUnit\Framework\TestCase;
+use Tecsafe\OFCP\JWT\Types\JwtBaseType;
 
 #[CoversClass(JWTParser::class)]
 class JWTParserTest extends TestCase
@@ -125,7 +126,7 @@ class JWTParserTest extends TestCase
         // Missing 'meta' in the Class, no getter available
         $this->assertEquals($this->getBaseJWT()['nbf'], $base->getNbf());
         $this->assertEquals($this->getBaseJWT()['sub'], $base->getSub());
-        $this->assertEquals($this->getBaseJWT()['type'], $base->getType());
+        $this->assertEquals(JwtBaseType::Internal, $base->getType());
     }
 
     /**
