@@ -1,4 +1,4 @@
-# JWT SDK
+# [JWT SDK](https://github.com/tecsafe/jwt-sdk)
 
 This repo contains the JWT SDK for parsing and validating JWT tokens from OFCP. The main code is
 written in TypeScript, but we also provide a JsonSchema and a PHP equivalent.
