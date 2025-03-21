@@ -62,7 +62,9 @@ export interface JwtBase {
   /**
    * The meta object contains additional information about the token, or the token's owner
    */
-  meta: {
-    [key: string]: any;
-  };
+  meta: JwtBaseMeta;
+}
+
+export interface JwtBaseMeta {
+  [key: string]: any;
 }

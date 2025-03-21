@@ -6,7 +6,6 @@ namespace Tecsafe\OFCP\JWT\SDK;
 
 use Firebase\JWT\JWK;
 use Firebase\JWT\JWT;
-use PHPModelGenerator\Exception\ErrorRegistryException;
 use Tecsafe\OFCP\JWT\Types\JwtBase;
 use Tecsafe\OFCP\JWT\Types\JwtCustomer;
 use Tecsafe\OFCP\JWT\Types\JwtInternal;
@@ -17,9 +16,6 @@ class JWTParser
 {
     /**
      * Internal base function to parse a JWT
-     *
-     * @param array<mixed, mixed>|null $jwk
-     * @throws \Exception
      */
     public static function parseJwt(string $jwt, ?array $jwk): ?array
     {
@@ -43,10 +39,6 @@ class JWTParser
 
     /**
      * Parse a JWT and return a JwtBase object
-     *
-     * @param array<mixed>|null $jwk
-     *
-     * @throws ErrorRegistryException
      */
     public static function parseBaseJwt(string $jwt, ?array $jwk): ?JwtBase
     {
@@ -56,15 +48,11 @@ class JWTParser
             return null;
         }
 
-        return new JwtBase($content);
+        return JwtBase::fromJson($content);
     }
 
     /**
      * Parse a JWT and return a JwtCustomer object
-     *
-     * @param array<mixed>|null $jwk
-     *
-     * @throws ErrorRegistryException
      */
     public static function parseCustomerJwt(string $jwt, ?array $jwk): ?JwtCustomer
     {
@@ -74,15 +62,11 @@ class JWTParser
             return null;
         }
 
-        return new JwtCustomer($content);
+        return JwtCustomer::fromJson($content);
     }
 
     /**
      * Parse a JWT and return a JwtInternal object
-     *
-     * @param array<mixed>|null $jwk
-     *
-     * @throws ErrorRegistryException
      */
     public static function parseInternalJwt(string $jwt, ?array $jwk): ?JwtInternal
     {
@@ -92,15 +76,11 @@ class JWTParser
             return null;
         }
 
-        return new JwtInternal($content);
+        return JwtInternal::fromJson($content);
     }
 
     /**
      * Parse a JWT and return a JwtSalesChannel object
-     *
-     * @param array<mixed>|null $jwk
-     *
-     * @throws ErrorRegistryException
      */
     public static function parseSalesChannelJwt(string $jwt, ?array $jwk): ?JwtSalesChannel
     {
@@ -110,15 +90,11 @@ class JWTParser
             return null;
         }
 
-        return new JwtSalesChannel($content);
+        return JwtSalesChannel::fromJson($content);
     }
 
     /**
      * Parse a JWT and return a JwtCockpit object
-     * 
-     * @param array<mixed>|null $jwk
-     * 
-     * @throws ErrorRegistryException
      */
     public static function parseCockpitJwt(string $jwt, ?array $jwk): ?JwtCockpit
     {
@@ -128,6 +104,6 @@ class JWTParser
             return null;
         }
 
-        return new JwtCockpit($content);
+        return JwtCockpit::fromJson($content);
     }
 }

@@ -17,8 +17,13 @@ export interface JwtCustomer extends JwtBase {
   /**
    * @inheritdoc
    */
-  meta: {
-    /**
+  meta: JwtCustomerMeta
+
+}
+
+export interface JwtCustomerMeta {
+
+      /**
      * The sales channel id of the customer
      */
     salesChannelId: string;
@@ -67,5 +72,5 @@ export interface JwtCustomer extends JwtBase {
      * The sales channel context token of the headless shop
      */
     contextToken: string;
-  }
+
 }

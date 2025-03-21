@@ -18,7 +18,10 @@ export interface JwtCockpit extends JwtBase {
   /**
    * @inheritdoc
    */
-  meta: {
+  meta: JwtCockpitMeta
+}
+
+export interface JwtCockpitMeta {
     /**
      * The role of the user
      */
@@ -48,5 +51,4 @@ export interface JwtCockpit extends JwtBase {
      * The OIDC providers subject identifier
      */
     oidcSub: string
-  }
 }

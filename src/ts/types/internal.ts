@@ -18,12 +18,14 @@ export interface JwtInternal extends JwtBase {
   /**
    * @inheritdoc
    */
-  meta: {
+  meta: JwtInternalMeta
+}
+
+export interface JwtInternalMeta {
     /**
      * The service names, for which this token can be use.
-     * 
+     *
      */
     targetServiceId: string[];
     // TODO: add internal specific fields
-  }
 }
