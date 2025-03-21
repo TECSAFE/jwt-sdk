@@ -39,10 +39,8 @@ jobs:
         run: pnpm build
       - name: Generate JsonSchema
         run: pnpm schema
-      - name: Split JsonSchema
-        run: pnpm split
       - name: Generate PHP
-        run: pnpm generate
+        run: pnpm generate:php
       
       # Run JS tests
       - name: Test JS

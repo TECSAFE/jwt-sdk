@@ -18,10 +18,12 @@ export interface JwtSalesChannel extends JwtBase {
   /**
    * @inheritdoc
    */
-  meta: {
+  meta: JwtSalesChannelMeta
+}
+
+export interface JwtSalesChannelMeta {
     /**
      * The sales channel access key of the headless shop
      */
     accessKey: string;
-  }
 }

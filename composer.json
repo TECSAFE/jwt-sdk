@@ -4,7 +4,6 @@
   "type": "library",
   "license": "MIT",
   "require": {
-    "wol-soft/php-json-schema-model-generator-production": "^0.19.0",
     "firebase/php-jwt": "^6.10",
     "ext-json": "*",
     "ext-mbstring": "*",
@@ -13,17 +12,17 @@
     "psr/http-factory": "^1.1"
   },
   "require-dev": {
-    "wol-soft/php-json-schema-model-generator": "^0.24.0",
     "phpunit/phpunit": "^11.1",
     "symfony/cache": "^7.1",
     "symfony/http-client": "^7.1",
     "nyholm/psr7": "^1.8",
     "phpstan/phpstan": "^1.11",
     "friendsofphp/php-cs-fixer": "^3.58",
-    "symfony/var-dumper": "^7.1"
+    "symfony/var-dumper": "^7.1",
+    "nikic/php-parser": "^5.4"
   },
   "scripts": {
-    "test": "@php vendor/bin/phpunit"
+    "test": "@php vendor/bin/phpunit --testdox"
   },
   "autoload": {
     "psr-4": {

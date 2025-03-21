@@ -8,6 +8,8 @@ use PHPModelGenerator\Exception\ErrorRegistryException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Tecsafe\OFCP\JWT\SDK\JWTParser;
 use PHPUnit\Framework\TestCase;
+use Tecsafe\OFCP\JWT\Types\JwtCustomerMeta;
+use Tecsafe\OFCP\JWT\Types\JwtType;
 
 #[CoversClass(JWTParser::class)]
 class JWTParserTest extends TestCase
@@ -19,23 +21,25 @@ class JWTParserTest extends TestCase
     private const JWT_CUSTOMER_JSON = "JwtCustomer.json";
     private const JWT_INTERNAL_JSON = "JwtInternal.json";
     private const JWT_SALES_CHANNEL_JSON = "JwtSalesChannel.json";
+    private const JWT_COCKPIT_JSON = "JwtCockpit.json";
+    private const JWT_COCKPIT_RAW = "JwtCockpit.json.jwt";
 
     /**
      * Test: Parse the SalesChannel JWT
      * @return void
      * @throws ErrorRegistryException
      */
-    public function testParseSalesChannelJwk(): void
+    public function testCanParseSalesChannelJwt(): void
     {
         $jwtSalesChannel = JWTParser::parseSalesChannelJwt($this->getSalesChannel(true), $this->getJwks());
-        $this->assertIsNumeric($jwtSalesChannel->getExp());
-        $this->assertIsNumeric($jwtSalesChannel->getIat());
-        $this->assertEquals($this->getSalesChannel()['exp'], $jwtSalesChannel->getExp());
-        $this->assertEquals($this->getSalesChannel()['iat'], $jwtSalesChannel->getIat());
-        $this->assertEquals($this->getSalesChannel()['iss'], $jwtSalesChannel->getIss());
-        $this->assertEquals($this->getSalesChannel()['nbf'], $jwtSalesChannel->getNbf());
-        $this->assertEquals($this->getSalesChannel()['sub'], $jwtSalesChannel->getSub());
-        $this->assertEquals($this->getSalesChannel()['type'], $jwtSalesChannel->getType());
+        $this->assertIsNumeric($jwtSalesChannel->exp);
+        $this->assertIsNumeric($jwtSalesChannel->iat);
+        $this->assertEquals($this->getSalesChannel()['exp'], $jwtSalesChannel->exp);
+        $this->assertEquals($this->getSalesChannel()['iat'], $jwtSalesChannel->iat);
+        $this->assertEquals($this->getSalesChannel()['iss'], $jwtSalesChannel->iss);
+        $this->assertEquals($this->getSalesChannel()['nbf'], $jwtSalesChannel->nbf);
+        $this->assertEquals($this->getSalesChannel()['sub'], $jwtSalesChannel->sub);
+        $this->assertEquals($this->getSalesChannel()['type'], $jwtSalesChannel->type->value);
         $this->assertObjectHasProperty('meta', $jwtSalesChannel);
     }
 
@@ -44,22 +48,22 @@ class JWTParserTest extends TestCase
      * @return void
      * @throws ErrorRegistryException
      */
-    public function testParseInternalJwk(): void
+    public function testCanParseInternalJwt(): void
     {
         $jwtInternal = JWTParser::parseInternalJwt($this->getInternal(true), $this->getJwks());
-        $this->assertIsNumeric($jwtInternal->getExp());
-        $this->assertIsNumeric($jwtInternal->getIat());
-        $this->assertEquals($this->getInternal()['exp'], $jwtInternal->getExp());
-        $this->assertEquals($this->getInternal()['iat'], $jwtInternal->getIat());
-        $this->assertEquals($this->getInternal()['iss'], $jwtInternal->getIss());
-        $this->assertObjectHasProperty('targetServiceId', $jwtInternal->getMeta());
+        $this->assertIsNumeric($jwtInternal->exp);
+        $this->assertIsNumeric($jwtInternal->iat);
+        $this->assertEquals($this->getInternal()['exp'], $jwtInternal->exp);
+        $this->assertEquals($this->getInternal()['iat'], $jwtInternal->iat);
+        $this->assertEquals($this->getInternal()['iss'], $jwtInternal->iss);
+        $this->assertObjectHasProperty('targetServiceId', $jwtInternal->meta);
         $this->assertEquals(
             $this->getInternal()['meta']['targetServiceId'],
-            $jwtInternal->getMeta()->getTargetServiceId()
+            $jwtInternal->meta->targetServiceId
         );
-        $this->assertEquals($this->getInternal()['nbf'], $jwtInternal->getNbf());
-        $this->assertEquals($this->getInternal()['sub'], $jwtInternal->getSub());
-        $this->assertEquals($this->getInternal()['type'], $jwtInternal->getType());
+        $this->assertEquals($this->getInternal()['nbf'], $jwtInternal->nbf);
+        $this->assertEquals($this->getInternal()['sub'], $jwtInternal->sub);
+        $this->assertEquals($this->getInternal()['type'], $jwtInternal->type->value);
     }
 
     /**
@@ -67,46 +71,68 @@ class JWTParserTest extends TestCase
      * @return void
      * @throws ErrorRegistryException
      */
-    public function testParseCustomerJwk(): void
+    public function testCanParseCustomerJwt(): void
     {
         $jwtCustomer = JWTParser::parseCustomerJwt($this->getCustomer(true), $this->getJwks());
-        $this->assertEquals('customer', $jwtCustomer->getType());
-        $meta = $jwtCustomer->getMeta();
+        $this->assertEquals(JwtType::CUSTOMER, $jwtCustomer->type);
+        $meta = $jwtCustomer->meta;
 
         $this->assertObjectHasProperty('salesChannelId', $meta);
         $this->assertObjectHasProperty('customerGroupId', $meta);
-        $this->assertTrue(method_exists($meta, 'getSalesChannelId'), 'Class does not have method getSalesChannelId');
-        $this->assertTrue(method_exists($meta, 'getCustomerGroupId'), 'Class does not have method getCustomerGroup');
 
-        $this->assertEquals($this->getCustomer()['exp'], $jwtCustomer->getExp());
-        $this->assertIsNumeric($jwtCustomer->getExp());
-        $this->assertIsNumeric($jwtCustomer->getIat());
-        $this->assertEquals($this->getCustomer()['iat'], $jwtCustomer->getIat());
-        $this->assertEquals($this->getCustomer()['iss'], $jwtCustomer->getIss());
+        $this->assertEquals($this->getCustomer()['exp'], $jwtCustomer->exp);
+        $this->assertIsNumeric($jwtCustomer->exp);
+        $this->assertIsNumeric($jwtCustomer->iat);
+        $this->assertEquals($this->getCustomer()['iat'], $jwtCustomer->iat);
+        $this->assertEquals($this->getCustomer()['iss'], $jwtCustomer->iss);
         $this->assertEquals(
             $this->getCustomer()['meta']['customerGroupId'],
-            $jwtCustomer->getMeta()->getCustomerGroupId()
+            $jwtCustomer->meta->customerGroupId
         );
         $this->assertEquals(
             $this->getCustomer()['meta']['salesChannelId'],
-            $jwtCustomer->getMeta()->getSalesChannelId()
+            $jwtCustomer->meta->salesChannelId
         );
-        $this->assertEquals($this->getCustomer()['nbf'], $jwtCustomer->getNbf());
-        $this->assertEquals($this->getCustomer()['sub'], $jwtCustomer->getSub());
-        $this->assertEquals($this->getCustomer()['type'], $jwtCustomer->getType());
+        $this->assertEquals($this->getCustomer()['nbf'], $jwtCustomer->nbf);
+        $this->assertEquals($this->getCustomer()['sub'], $jwtCustomer->sub);
+        $this->assertEquals($this->getCustomer()['type'], $jwtCustomer->type->value);
     }
 
-    public function testParseCustomerJwtWithoutJwks(): void
+    /**
+     * Test: Parse the Cockpit JWT
+     */
+    public function testCanParseCockpitJwt(): void
+    {
+        $jwtCockpit = JWTParser::parseCockpitJwt($this->getCockpit(true), $this->getJwks());
+        $this->assertEquals(JwtType::COCKPIT, $jwtCockpit->type);
+        $meta = $jwtCockpit->meta;
+
+        $this->assertObjectHasProperty('role', $meta);
+
+        $this->assertEquals($this->getCockpit()['exp'], $jwtCockpit->exp);
+        $this->assertIsNumeric($jwtCockpit->exp);
+        $this->assertIsNumeric($jwtCockpit->iat);
+        $this->assertEquals($this->getCockpit()['iat'], $jwtCockpit->iat);
+        $this->assertEquals($this->getCockpit()['iss'], $jwtCockpit->iss);
+        $this->assertEquals(
+            $this->getCockpit()['meta']['role'],
+            $jwtCockpit->meta->role->value
+        );
+        $this->assertEquals($this->getCockpit()['nbf'], $jwtCockpit->nbf);
+        $this->assertEquals($this->getCockpit()['sub'], $jwtCockpit->sub);
+        $this->assertEquals($this->getCockpit()['type'], $jwtCockpit->type->value);
+    }
+
+    public function testCanParseCustomerJwtWithoutJwks(): void
     {
         $jwtCustomer = JWTParser::parseCustomerJwt($this->getCustomer(true), null);
-        $this->assertEquals('customer', $jwtCustomer->getType());
+        $this->assertEquals(JwtType::CUSTOMER, $jwtCustomer->type);
 
-        $meta = $jwtCustomer->getMeta();
+        $meta = $jwtCustomer->meta;
+        $this->assertInstanceOf(JwtCustomerMeta::class, $meta);
 
         $this->assertObjectHasProperty('salesChannelId', $meta);
         $this->assertObjectHasProperty('customerGroupId', $meta);
-        $this->assertTrue(\method_exists($meta, 'getSalesChannelId'), 'Class does not have method getSalesChannelId');
-        $this->assertTrue(\method_exists($meta, 'getCustomerGroupId'), 'Class does not have method getCustomerGroup');
     }
 
     /**
@@ -114,18 +140,18 @@ class JWTParserTest extends TestCase
      * @return void
      * @throws ErrorRegistryException
      */
-    public function testBase(): void
+    public function testCanParseBaseJwt(): void
     {
         $base = JWTParser::parseBaseJwt($this->getBaseJWT(true), $this->getJwks());
-        $this->assertIsNumeric($base->getExp());
-        $this->assertIsNumeric($base->getIat());
-        $this->assertEquals($this->getBaseJWT()['exp'], $base->getExp());
-        $this->assertEquals($this->getBaseJWT()['iat'], $base->getIat());
-        $this->assertEquals($this->getBaseJWT()['iss'], $base->getIss());
+        $this->assertIsNumeric($base->exp);
+        $this->assertIsNumeric($base->iat);
+        $this->assertEquals($this->getBaseJWT()['exp'], $base->exp);
+        $this->assertEquals($this->getBaseJWT()['iat'], $base->iat);
+        $this->assertEquals($this->getBaseJWT()['iss'], $base->iss);
         // Missing 'meta' in the Class, no getter available
-        $this->assertEquals($this->getBaseJWT()['nbf'], $base->getNbf());
-        $this->assertEquals($this->getBaseJWT()['sub'], $base->getSub());
-        $this->assertEquals($this->getBaseJWT()['type'], $base->getType());
+        $this->assertEquals($this->getBaseJWT()['nbf'], $base->nbf);
+        $this->assertEquals($this->getBaseJWT()['sub'], $base->sub);
+        $this->assertEquals(JwtType::INTERNAL, $base->type);
     }
 
     /**
@@ -223,6 +249,20 @@ class JWTParserTest extends TestCase
             return $this->getKeyContent(self::JWT_INTERNAL_RAW);
         } else {
             return $this->getKeyAndJsonDecode(self::JWT_INTERNAL_JSON);
+        }
+    }
+
+    /**
+     * Get the sales channel (raw or json)
+     * @param bool $rawJwt
+     * @return string|array
+     */
+    private function getCockpit(bool $rawJwt = false): string|array
+    {
+        if ($rawJwt) {
+            return $this->getKeyContent(self::JWT_COCKPIT_RAW);
+        } else {
+            return $this->getKeyAndJsonDecode(self::JWT_COCKPIT_JSON);
         }
     }
 }

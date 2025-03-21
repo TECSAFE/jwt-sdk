@@ -5,13 +5,8 @@ import jwt from 'jsonwebtoken';
 import * as crypto from 'crypto';
 
 const __dirname = new URL('.', import.meta.url).pathname;
-const SCHEMA_DIR = join(__dirname, '..', '..', 'schemas');
+const SCHEMA_FILE = join(__dirname, '..', '..', 'schema.json');
 const OUTPUT_DIR = join(__dirname, 'keys');
-
-if (!existsSync(SCHEMA_DIR)) {
-  console.error('Schema directory not found at', SCHEMA_DIR);
-  process.exit(1);
-}
 
 (async () => {
   if (!existsSync(OUTPUT_DIR)) mkdirSync(OUTPUT_DIR);
@@ -38,14 +33,24 @@ if (!existsSync(SCHEMA_DIR)) {
   writeFileSync(join(OUTPUT_DIR, 'jwks.json'), JSON.stringify(jwks, null, 2));
   console.log('Generated jwks.json');
 
-  for (const file of readdirSync(SCHEMA_DIR)) {
-    const schema = JSON.parse(readFileSync(join(SCHEMA_DIR, file), 'utf8'));
+  const schema = JSON.parse(readFileSync(SCHEMA_FILE), 'utf8');
+
+  for (const [key, definition] of Object.entries(schema.definitions)) {
+    const file = `${key}.json`;
+
+      // Eine Kopie des Definitionsobjekts erstellen, die auch die anderen Definitionen enthält
+    const definitionWithContext = {
+      ...definition,
+      definitions: schema.definitions
+    };
+
     const data = {
-      ...jsf.generate(schema),
+      ...jsf.generate(definitionWithContext),
       nbf: 0,
       exp: Number.MAX_SAFE_INTEGER,
       iat: 1000,
     }
+
     writeFileSync(join(OUTPUT_DIR, file), JSON.stringify(data, null, 2));
     console.log(`Generated ${file}`);
     const signed = jwt.sign(

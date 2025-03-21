@@ -30,6 +30,11 @@ export interface JwtBase {
   sub: string;
 
   /**
+   * The JWT ID, a unique identifier for the token
+   */
+  jti: string;
+
+  /**
    * Unix timestamp of when the token was issued
    */
   iat: number;
@@ -57,7 +62,9 @@ export interface JwtBase {
   /**
    * The meta object contains additional information about the token, or the token's owner
    */
-  meta: {
-    [key: string]: any;
-  };
+  meta: JwtBaseMeta;
+}
+
+export interface JwtBaseMeta {
+  [key: string]: any;
 }
