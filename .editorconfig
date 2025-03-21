@@ -16,6 +16,9 @@ ij_smart_tabs = false
 ij_visual_guides = 
 ij_wrap_on_typing = false
 
+[*.js]
+indent_size = 2
+
 [.editorconfig]
 ij_editorconfig_align_group_field_declarations = false
 ij_editorconfig_space_after_colon = false
