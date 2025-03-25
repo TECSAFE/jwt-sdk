@@ -294,31 +294,50 @@ DOC
 
     private function generateConstructor(array $properties): Stmt\ClassMethod
     {
-        return new Stmt\ClassMethod('__construct', [
-            'params' => array_map(function ($name, $propertySchema) {
-                $type = $this->resolvePropertyType($name, $propertySchema);
+        $params = array_map(function ($name, $propertySchema) {
+            $type = $this->resolvePropertyType($name, $propertySchema);
+            $description = $propertySchema['description'] ?? null;
 
-                $description = $propertySchema['description'] ?? null;
-
-                $param = new Node\Param(
-                    var: new Expr\Variable($name),
-                    default: $this->createDefaultValue($propertySchema),
-                    type: new Identifier($type),
-                    flags: \PhpParser\Modifiers::PUBLIC,
-                );
-                if ($description) {
-                    $param->setDocComment(
-                        new \PhpParser\Comment\Doc(
-                            <<<DOC
+            $param = new Node\Param(
+                var: new Expr\Variable($name),
+                default: $this->createDefaultValue($propertySchema),
+                type: new Identifier($type),
+                flags: \PhpParser\Modifiers::PUBLIC,
+            );
+            if ($description) {
+                $param->setDocComment(
+                    new \PhpParser\Comment\Doc(
+<<<DOC
 /**
  * $description
  */
 DOC
-                        )
-                    );
-                }
-                return $param;
-            }, array_keys($properties), $properties),
+                    )
+                );
+            }
+            return $param;
+        }, array_keys($properties), $properties);
+
+        // Füge das rawToken-Attribut als letzten Parameter hinzu
+        $rawTokenParam = new Node\Param(
+            var: new Expr\Variable('rawToken'),
+            default: new Expr\ConstFetch(new Name('null')),
+            type: new Identifier('?string'),
+            flags: \PhpParser\Modifiers::PUBLIC,
+        );
+        $rawTokenParam->setDocComment(
+            new \PhpParser\Comment\Doc(
+<<<DOC
+/**
+ * Der ursprüngliche Token-String
+ */
+DOC
+            )
+        );
+        $params[] = $rawTokenParam;
+
+        return new Stmt\ClassMethod('__construct', [
+            'params' => $params,
         ]);
     }
 
@@ -357,6 +376,12 @@ DOC
                 new Node\Param(
                     var: new Expr\Variable('data'),
                     type: new Identifier('string|array')
+                ),
+                // Füge den rawToken-Parameter hinzu
+                new Node\Param(
+                    var: new Expr\Variable('rawToken'),
+                    default: new Expr\ConstFetch(new Name('null')),
+                    type: new Identifier('?string')
                 )
             ],
             'returnType' => new Name($className),
@@ -389,13 +414,17 @@ DOC
                 new Stmt\Return_(
                     new Expr\New_(
                         new Name($className),
-                        array_map(function ($name, $propertySchema) {
-                            $propertyValue = new Expr\ArrayDimFetch(
-                                new Expr\Variable('data'),
-                                new Node\Scalar\String_($name)
-                            );
-                            return $this->processPropertyValue($name, $propertySchema, $propertyValue);
-                        }, array_keys($properties), $properties)
+                        array_merge(
+                            array_map(function ($name, $propertySchema) {
+                                $propertyValue = new Expr\ArrayDimFetch(
+                                    new Expr\Variable('data'),
+                                    new Node\Scalar\String_($name)
+                                );
+                                return $this->processPropertyValue($name, $propertySchema, $propertyValue);
+                            }, array_keys($properties), $properties),
+                            // Füge rawToken als letzten Parameter hinzu
+                            [new Node\Arg(new Expr\Variable('rawToken'))]
+                        )
                     )
                 )
             ]
@@ -452,25 +481,28 @@ DOC
 
     private function createJsonSerializeMethod(array $propertyNames): Stmt\ClassMethod
     {
-        $arrayItems = array_map(function ($name) {
-            return new Expr\ArrayItem(
-                new Expr\PropertyFetch(
-                    new Expr\Variable('this'),
-                    $name
-                ),
-                new Node\Scalar\String_($name),
-            // Setting multiline to true forces line breaks
+        $returnArrayItems = [];
+
+        // Vorhandene Properties hinzufügen
+        foreach ($propertyNames as $name) {
+            $returnArrayItems[] = new Expr\ArrayItem(
+                new Expr\PropertyFetch(new Expr\Variable('this'), $name),
+                new Node\Scalar\String_($name)
             );
-        }, $propertyNames);
+        }
+
+        // rawToken zur Serialisierung hinzufügen
+        $returnArrayItems[] = new Expr\ArrayItem(
+            new Expr\PropertyFetch(new Expr\Variable('this'), 'rawToken'),
+            new Node\Scalar\String_('rawToken')
+        );
 
         return new Stmt\ClassMethod('jsonSerialize', [
             'flags' => Stmt\Class_::MODIFIER_PUBLIC,
-            'returnType' => new Name('mixed'),
+            'returnType' => new Identifier('array'),
             'stmts' => [
                 new Stmt\Return_(
-                    new Expr\Array_($arrayItems, [
-                        'multiline' => true // This parameter forces multiple lines
-                    ])
+                    new Expr\Array_($returnArrayItems)
                 )
             ]
         ]);

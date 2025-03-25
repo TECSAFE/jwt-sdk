@@ -48,7 +48,7 @@ class JWTParser
             return null;
         }
 
-        return JwtBase::fromJson($content);
+        return JwtBase::fromJson($content, $jwt);
     }
 
     /**
@@ -62,7 +62,7 @@ class JWTParser
             return null;
         }
 
-        return JwtCustomer::fromJson($content);
+        return JwtCustomer::fromJson($content, $jwt);
     }
 
     /**
@@ -76,7 +76,7 @@ class JWTParser
             return null;
         }
 
-        return JwtInternal::fromJson($content);
+        return JwtInternal::fromJson($content, $jwt);
     }
 
     /**
@@ -90,7 +90,7 @@ class JWTParser
             return null;
         }
 
-        return JwtSalesChannel::fromJson($content);
+        return JwtSalesChannel::fromJson($content, $jwt);
     }
 
     /**
@@ -104,6 +104,6 @@ class JWTParser
             return null;
         }
 
-        return JwtCockpit::fromJson($content);
+        return JwtCockpit::fromJson($content, $jwt);
     }
 }

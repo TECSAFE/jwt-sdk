@@ -41,6 +41,7 @@ class JWTParserTest extends TestCase
         $this->assertEquals($this->getSalesChannel()['sub'], $jwtSalesChannel->sub);
         $this->assertEquals($this->getSalesChannel()['type'], $jwtSalesChannel->type->value);
         $this->assertObjectHasProperty('meta', $jwtSalesChannel);
+        $this->assertEquals($this->getSalesChannel(true), $jwtSalesChannel->rawToken);
     }
 
     /**
@@ -64,6 +65,7 @@ class JWTParserTest extends TestCase
         $this->assertEquals($this->getInternal()['nbf'], $jwtInternal->nbf);
         $this->assertEquals($this->getInternal()['sub'], $jwtInternal->sub);
         $this->assertEquals($this->getInternal()['type'], $jwtInternal->type->value);
+        $this->assertEquals($this->getInternal(true), $jwtInternal->rawToken);
     }
 
     /**
@@ -96,6 +98,7 @@ class JWTParserTest extends TestCase
         $this->assertEquals($this->getCustomer()['nbf'], $jwtCustomer->nbf);
         $this->assertEquals($this->getCustomer()['sub'], $jwtCustomer->sub);
         $this->assertEquals($this->getCustomer()['type'], $jwtCustomer->type->value);
+        $this->assertEquals($this->getCustomer(true), $jwtCustomer->rawToken);
     }
 
     /**
@@ -121,6 +124,7 @@ class JWTParserTest extends TestCase
         $this->assertEquals($this->getCockpit()['nbf'], $jwtCockpit->nbf);
         $this->assertEquals($this->getCockpit()['sub'], $jwtCockpit->sub);
         $this->assertEquals($this->getCockpit()['type'], $jwtCockpit->type->value);
+        $this->assertEquals($this->getCockpit(true), $jwtCockpit->rawToken);
     }
 
     public function testCanParseCustomerJwtWithoutJwks(): void
@@ -133,12 +137,12 @@ class JWTParserTest extends TestCase
 
         $this->assertObjectHasProperty('salesChannelId', $meta);
         $this->assertObjectHasProperty('customerGroupId', $meta);
+        $this->assertEquals($this->getCustomer(true), $jwtCustomer->rawToken);
     }
 
     /**
      * Test: Parse the Base JWT
      * @return void
-     * @throws ErrorRegistryException
      */
     public function testCanParseBaseJwt(): void
     {
@@ -152,6 +156,7 @@ class JWTParserTest extends TestCase
         $this->assertEquals($this->getBaseJWT()['nbf'], $base->nbf);
         $this->assertEquals($this->getBaseJWT()['sub'], $base->sub);
         $this->assertEquals(JwtType::INTERNAL, $base->type);
+        $this->assertEquals($this->getBaseJWT(true), $base->rawToken);
     }
 
     /**
