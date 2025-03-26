@@ -99,6 +99,6 @@ jobs:
           echo "" >> jwt-sdk-php/README.md
           cat README.md >> jwt-sdk-php/README.md
           cd jwt-sdk-php
-          git add .
-          git commit -m "Update to commit $GITHUB_SHA"
-          git push
+          git add . || true
+          git commit -m "Update to commit $GITHUB_SHA" || true
+          git push || true
