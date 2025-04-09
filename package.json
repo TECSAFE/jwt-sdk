@@ -1,60 +1,66 @@
 {
-	"name": "@tecsafe/jwt-sdk",
-	"type": "module",
-	"version": "IN-DEV",
-	"description": "The SDK for token parsing and validation against the JWKS. Also contains the types of token bodies.",
-	"private": false,
-	"license": "MIT",
-	"main": "dist/cjs/index.js",
-	"module": "dist/esm/index.js",
-	"types": "dist/types/index.d.ts",
-	"exports": {
-		"require": "./dist/cjs/index.js",
-		"import": "./dist/esm/index.js"
-	},
-	"files": [
-		"dist",
-		"LICENSE",
-		"README.md",
-		"package.json",
-		"pnpm-lock.yaml",
-		"schema.json"
-	],
-	"repository": "https://github.com/TECSAFE/jwt-sdk",
-	"homepage": "https://tecsafe.de/",
-	"keywords": [
-		"jwt",
-		"sdk",
-		"jwks",
-		"token",
-		"validation",
-		"parsing",
-		"types"
-	],
-	"scripts": {
-		"build:cjs": "tsc --project tsconfig.cjs.json",
-		"build:esm": "tsc --project tsconfig.esm.json",
-		"build": "npm run build:cjs && npm run build:esm && node post-build.js",
-		"doc": "typedoc --out docs src/ts/",
-		"schema": "ts-json-schema-generator -f tsconfig.json --path 'src/ts/types/**/*.ts' --out 'schema.json'",
-		"generate:php": "php generate.php",
-		"test": "node test/example/generate.js && jest --runInBand"
-	},
-	"devDependencies": {
-		"@jest/globals": "^29.7.0",
-		"@parcel/packager-ts": "2.12.0",
-		"@parcel/transformer-typescript-types": "2.12.0",
-		"@types/jest": "^29.5.12",
-		"express": "^4.19.2",
-		"jest": "^29.7.0",
-		"json-schema-faker": "^0.5.6",
-		"jsonwebtoken": "^9.0.2",
-		"ts-jest": "^29.1.2",
-		"ts-json-schema-generator": "^2.1.1",
-		"typedoc": "^0.25.13",
-		"typescript": "^5.4.5"
-	},
-	"dependencies": {
-		"jose": "^5.3.0"
-	}
+  "name": "@tecsafe/jwt-sdk",
+  "type": "module",
+  "version": "IN-DEV",
+  "description": "The SDK for token parsing and validation against the JWKS. Also contains the types of token bodies.",
+  "private": false,
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    "require": {
+      "default": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "import": {
+      "default": "./dist/esm/index.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md",
+    "package.json",
+    "pnpm-lock.yaml",
+    "schema.json"
+  ],
+  "repository": "https://github.com/TECSAFE/jwt-sdk",
+  "homepage": "https://tecsafe.de/",
+  "keywords": [
+    "jwt",
+    "sdk",
+    "jwks",
+    "token",
+    "validation",
+    "parsing",
+    "types"
+  ],
+  "scripts": {
+    "build:cjs": "tsc --project tsconfig.cjs.json",
+    "build:esm": "tsc --project tsconfig.esm.json",
+    "build": "npm run build:cjs && npm run build:esm && node post-build.js",
+    "doc": "typedoc --out docs src/ts/",
+    "schema": "ts-json-schema-generator -f tsconfig.json --path 'src/ts/types/**/*.ts' --out 'schema.json'",
+    "generate:php": "php generate.php",
+    "test": "node test/example/generate.js && jest --runInBand"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@parcel/packager-ts": "2.12.0",
+    "@parcel/transformer-typescript-types": "2.12.0",
+    "@types/jest": "^29.5.12",
+    "express": "^4.19.2",
+    "jest": "^29.7.0",
+    "json-schema-faker": "^0.5.6",
+    "jsonwebtoken": "^9.0.2",
+    "ts-jest": "^29.1.2",
+    "ts-json-schema-generator": "^2.1.1",
+    "typedoc": "^0.25.13",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "jose": "^5.3.0"
+  }
 }
