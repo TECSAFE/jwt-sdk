@@ -1,0 +1,407 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "CockpitRole": {
+      "enum": [
+        "PLATFORM_ADMIN",
+        "COMPANY_ADMIN",
+        "COMPANY_ACCOUNTING_MANAGER",
+        "COMPANY_PURCHASE_MANAGER",
+        "COMPANY_SALES_MANAGER"
+      ],
+      "type": "string"
+    },
+    "JwtBase": {
+      "additionalProperties": false,
+      "description": "The base structure of a JWT token",
+      "properties": {
+        "exp": {
+          "description": "Unix timestamp of when the token expires",
+          "type": "number"
+        },
+        "iat": {
+          "description": "Unix timestamp of when the token was issued",
+          "type": "number"
+        },
+        "iss": {
+          "description": "The issuer of the token, usually will equal to \"api-gateway\"",
+          "type": "string"
+        },
+        "jti": {
+          "description": "The JWT ID, a unique identifier for the token",
+          "type": "string"
+        },
+        "meta": {
+          "$ref": "#/definitions/JwtBaseMeta",
+          "description": "The meta object contains additional information about the token, or the token's owner"
+        },
+        "nbf": {
+          "description": "Unix timestamp of when the token becomes active",
+          "type": "number"
+        },
+        "sub": {
+          "description": "The subject of the token, user id, sales channel id, micro service id, etc.",
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/JwtType",
+          "description": "The token's type,"
+        }
+      },
+      "required": [
+        "sub",
+        "jti",
+        "iat",
+        "exp",
+        "nbf",
+        "iss",
+        "type",
+        "meta"
+      ],
+      "type": "object"
+    },
+    "JwtBaseMeta": {
+      "type": "object"
+    },
+    "JwtCockpit": {
+      "additionalProperties": false,
+      "description": "The structure of a JWT token for an cockpit user.",
+      "properties": {
+        "exp": {
+          "description": "Unix timestamp of when the token expires",
+          "type": "number"
+        },
+        "iat": {
+          "description": "Unix timestamp of when the token was issued",
+          "type": "number"
+        },
+        "iss": {
+          "description": "The issuer of the token, usually will equal to \"api-gateway\"",
+          "type": "string"
+        },
+        "jti": {
+          "description": "The JWT ID, a unique identifier for the token",
+          "type": "string"
+        },
+        "meta": {
+          "$ref": "#/definitions/JwtCockpitMeta",
+          "description": "The meta object contains additional information about the token, or the token's owner"
+        },
+        "nbf": {
+          "description": "Unix timestamp of when the token becomes active",
+          "type": "number"
+        },
+        "sub": {
+          "description": "The user id of the cockpit user",
+          "type": "string"
+        },
+        "type": {
+          "const": "cockpit",
+          "description": "For cockpit tokens, the type will always be \"cockpit\"",
+          "type": "string"
+        }
+      },
+      "required": [
+        "exp",
+        "iat",
+        "iss",
+        "jti",
+        "meta",
+        "nbf",
+        "sub",
+        "type"
+      ],
+      "type": "object"
+    },
+    "JwtCockpitMeta": {
+      "additionalProperties": false,
+      "properties": {
+        "email": {
+          "description": "The user's email address",
+          "type": "string"
+        },
+        "firstName": {
+          "description": "The user's first name",
+          "type": "string"
+        },
+        "lastName": {
+          "description": "The user's last name",
+          "type": "string"
+        },
+        "oidcSub": {
+          "description": "The OIDC providers subject identifier",
+          "type": "string"
+        },
+        "organization": {
+          "description": "The user's organization",
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/definitions/CockpitRole",
+          "description": "The role of the user"
+        }
+      },
+      "required": [
+        "role",
+        "email",
+        "firstName",
+        "lastName",
+        "organization",
+        "oidcSub"
+      ],
+      "type": "object"
+    },
+    "JwtCustomer": {
+      "additionalProperties": false,
+      "description": "The structure of a JWT token for a customer of an authenticated sales channel",
+      "properties": {
+        "exp": {
+          "description": "Unix timestamp of when the token expires",
+          "type": "number"
+        },
+        "iat": {
+          "description": "Unix timestamp of when the token was issued",
+          "type": "number"
+        },
+        "iss": {
+          "description": "The issuer of the token, usually will equal to \"api-gateway\"",
+          "type": "string"
+        },
+        "jti": {
+          "description": "The JWT ID, a unique identifier for the token",
+          "type": "string"
+        },
+        "meta": {
+          "$ref": "#/definitions/JwtCustomerMeta",
+          "description": "The meta object contains additional information about the token, or the token's owner"
+        },
+        "nbf": {
+          "description": "Unix timestamp of when the token becomes active",
+          "type": "number"
+        },
+        "sub": {
+          "description": "The user id of the customer",
+          "type": "string"
+        },
+        "type": {
+          "const": "customer",
+          "description": "For customer tokens, the type will always be \"customer\"",
+          "type": "string"
+        }
+      },
+      "required": [
+        "exp",
+        "iat",
+        "iss",
+        "jti",
+        "meta",
+        "nbf",
+        "sub",
+        "type"
+      ],
+      "type": "object"
+    },
+    "JwtCustomerMeta": {
+      "additionalProperties": false,
+      "properties": {
+        "accessKey": {
+          "description": "The sales channel access key of the headless shop",
+          "type": "string"
+        },
+        "contextToken": {
+          "description": "The sales channel context token of the headless shop",
+          "type": "string"
+        },
+        "currencyId": {
+          "description": "Currency of the customer",
+          "type": "string"
+        },
+        "currencyIso": {
+          "description": "Currency ISO 4217 code",
+          "type": "string"
+        },
+        "customerGroupId": {
+          "description": "The group id of the customer inside of the sales channel",
+          "type": "string"
+        },
+        "customerIdentifier": {
+          "description": "A from the external sales channel provided customer id",
+          "type": "string"
+        },
+        "email": {
+          "description": "The customer's email address, in most cases only available if guest is false",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "externalGroupName": {
+          "description": "The external group name of the customer",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "guest": {
+          "description": "Is the customer an guest customer?",
+          "type": "boolean"
+        },
+        "salesChannelId": {
+          "description": "The sales channel id of the customer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "salesChannelId",
+        "customerGroupId",
+        "externalGroupName",
+        "currencyId",
+        "currencyIso",
+        "guest",
+        "email",
+        "customerIdentifier",
+        "accessKey",
+        "contextToken"
+      ],
+      "type": "object"
+    },
+    "JwtInternal": {
+      "additionalProperties": false,
+      "description": "The structure of a JWT token for an internal micro service. A token of this type will only be used for internal communication between micro services.",
+      "properties": {
+        "exp": {
+          "description": "Unix timestamp of when the token expires",
+          "type": "number"
+        },
+        "iat": {
+          "description": "Unix timestamp of when the token was issued",
+          "type": "number"
+        },
+        "iss": {
+          "description": "The issuer of the token, usually will equal to \"api-gateway\"",
+          "type": "string"
+        },
+        "jti": {
+          "description": "The JWT ID, a unique identifier for the token",
+          "type": "string"
+        },
+        "meta": {
+          "$ref": "#/definitions/JwtInternalMeta",
+          "description": "The meta object contains additional information about the token, or the token's owner"
+        },
+        "nbf": {
+          "description": "Unix timestamp of when the token becomes active",
+          "type": "number"
+        },
+        "sub": {
+          "description": "The internal micro service id, which requested the token",
+          "type": "string"
+        },
+        "type": {
+          "const": "internal",
+          "description": "For internal tokens, the type will always be \"internal\"",
+          "type": "string"
+        }
+      },
+      "required": [
+        "exp",
+        "iat",
+        "iss",
+        "jti",
+        "meta",
+        "nbf",
+        "sub",
+        "type"
+      ],
+      "type": "object"
+    },
+    "JwtInternalMeta": {
+      "additionalProperties": false,
+      "properties": {
+        "targetServiceId": {
+          "description": "The service names, for which this token can be use.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "targetServiceId"
+      ],
+      "type": "object"
+    },
+    "JwtSalesChannel": {
+      "additionalProperties": false,
+      "description": "The structure of a JWT token for a registered sales channel Sales channels can request customer tokens with this token",
+      "properties": {
+        "exp": {
+          "description": "Unix timestamp of when the token expires",
+          "type": "number"
+        },
+        "iat": {
+          "description": "Unix timestamp of when the token was issued",
+          "type": "number"
+        },
+        "iss": {
+          "description": "The issuer of the token, usually will equal to \"api-gateway\"",
+          "type": "string"
+        },
+        "jti": {
+          "description": "The JWT ID, a unique identifier for the token",
+          "type": "string"
+        },
+        "meta": {
+          "$ref": "#/definitions/JwtSalesChannelMeta",
+          "description": "The meta object contains additional information about the token, or the token's owner"
+        },
+        "nbf": {
+          "description": "Unix timestamp of when the token becomes active",
+          "type": "number"
+        },
+        "sub": {
+          "description": "The sales channel id",
+          "type": "string"
+        },
+        "type": {
+          "const": "sales-channel",
+          "description": "For sales-channel tokens, the type will always be \"sales-channel\"",
+          "type": "string"
+        }
+      },
+      "required": [
+        "exp",
+        "iat",
+        "iss",
+        "jti",
+        "meta",
+        "nbf",
+        "sub",
+        "type"
+      ],
+      "type": "object"
+    },
+    "JwtSalesChannelMeta": {
+      "additionalProperties": false,
+      "properties": {
+        "accessKey": {
+          "description": "The sales channel access key of the headless shop",
+          "type": "string"
+        }
+      },
+      "required": [
+        "accessKey"
+      ],
+      "type": "object"
+    },
+    "JwtType": {
+      "enum": [
+        "customer",
+        "sales-channel",
+        "cockpit",
+        "internal"
+      ],
+      "type": "string"
+    }
+  }
+}
