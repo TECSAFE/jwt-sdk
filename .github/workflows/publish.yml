@@ -48,7 +48,9 @@ jobs:
       
       # Final touches
       - name: Replace version in package.json to be semver compatible
-        run: sed -i "s/IN-DEV/$(echo $GITHUB_REF | sed 's/refs\/tags\///')/" package.json
+        run: |
+          sed -i "s/IN-DEV/$(echo $GITHUB_REF | sed 's/refs\/tags\///')/" package.json
+          cat package.json
       
       # JSON Schema Sync
       - name: Prepare json-schema publication
